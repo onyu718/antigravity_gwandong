@@ -1,0 +1,1066 @@
+/* ==========================================================================
+   Serene Scholar's Study Theme (문인의 서재 + 자연주의 테마)
+   Designed by Antigravity
+   ========================================================================== */
+
+/* Design Variables */
+:root {
+  /* Colors */
+  --dark-wood: #2D1A16;          /* 짙은 고동색: 메인 프레임 및 구분선 */
+  --dark-wood-light: #4A312B;    /* 서브 고동색: 호버 및 카드 그림자 */
+  --dark-wood-dark: #1E0F0D;     /* 심연 고동색: 헤더 백그라운드 */
+  
+  --hanji-bg: #FAF6EB;           /* 한지색: 텍스트 영역 기본 배경 */
+  --hanji-card: #FDFCFA;         /* 맑은 한지: 카드형 컴포넌트 배경 */
+  --hanji-border: #E6DCBD;       /* 옛 서책 테두리선 */
+  
+  --ocean-cyan: #0E6273;         /* 동해 바다 청록색: 진도 지표 및 핵심 하이라이트 */
+  --ocean-cyan-light: #1A8299;   /* 밝은 청록색: 마커 강조 및 호버 */
+  
+  --forest-green: #1F3F2D;       /* 금강산 수풀 초록: 헤더 무드 및 주요 실행 버튼 */
+  --forest-green-light: #325E47; /* 밝은 초록: 정답 피드백 및 활성화 요소 */
+  
+  --crimson-accent: #8E251E;     /* 붉은 인장색: 오답 피드백 및 경고 요소 */
+  --white: #FFFFFF;
+  
+  /* Typography */
+  --font-serif: 'Gowun Batang', 'Noto Serif KR', serif;
+  --font-sans: 'Outfit', 'Noto Sans KR', sans-serif;
+  
+  /* Transitions */
+  --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --transition-fast: all 0.15s ease-out;
+  
+  /* Shadow & Blur */
+  --wood-shadow: 0 4px 20px rgba(30, 15, 13, 0.15);
+  --glass-blur: blur(12px);
+  --glass-bg: rgba(253, 252, 250, 0.85);
+  --glass-border: rgba(45, 26, 22, 0.08);
+}
+
+/* Reset and Core Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--dark-wood-dark);
+  color: var(--dark-wood);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--hanji-bg);
+  border-left: 1px solid var(--hanji-border);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--hanji-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--dark-wood-light);
+}
+
+/* ==========================================================================
+   Header Layout
+   ========================================================================== */
+.app-header {
+  background: linear-gradient(135deg, var(--dark-wood-dark) 0%, var(--dark-wood) 100%);
+  color: var(--hanji-bg);
+  height: 70px;
+  padding: 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--ocean-cyan);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  font-size: 1.6rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.logo h1 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.logo-sub {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: var(--hanji-border);
+  border-left: 1px solid var(--dark-wood-light);
+  padding-left: 12px;
+  margin-left: 4px;
+}
+
+/* Learning Progress Tracker */
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(250, 246, 235, 0.08);
+  padding: 8px 16px;
+  border-radius: 30px;
+  border: 1px solid rgba(230, 220, 189, 0.15);
+}
+
+.progress-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--hanji-border);
+}
+
+.progress-bar-bg {
+  width: 150px;
+  height: 8px;
+  background: rgba(230, 220, 189, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ocean-cyan-light) 0%, var(--ocean-cyan) 100%);
+  border-radius: 4px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--white);
+  min-width: 90px;
+}
+
+/* Header Control Buttons */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.icon-btn {
+  background: rgba(250, 246, 235, 0.1);
+  color: var(--hanji-bg);
+  border: 1px solid rgba(250, 246, 235, 0.2);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition-fast);
+}
+
+.icon-btn:hover {
+  background: var(--ocean-cyan);
+  border-color: var(--ocean-cyan-light);
+  transform: translateY(-1px);
+}
+
+.icon-btn:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   Main Workstation Layout (Split Pane)
+   ========================================================================== */
+.app-layout {
+  flex: 1;
+  display: flex;
+  height: calc(100vh - 70px);
+  overflow: hidden;
+}
+
+.pane {
+  height: 100%;
+  position: relative;
+}
+
+/* Left Pane: Literature Content Panel (60%) */
+.text-pane {
+  width: 60%;
+  background: var(--hanji-bg);
+  overflow-y: auto;
+  padding: 40px;
+  border-right: 3px double var(--hanji-border);
+  box-shadow: inset -5px 0 15px rgba(45, 26, 22, 0.03);
+}
+
+.panel-header {
+  margin-bottom: 35px;
+  border-bottom: 1px solid var(--hanji-border);
+  padding-bottom: 20px;
+}
+
+.panel-title-korean {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  color: var(--ocean-cyan);
+  font-weight: 700;
+  letter-spacing: 4px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.panel-header h2 {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--dark-wood);
+}
+
+.panel-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+/* Right Pane: Kakao Map Panel (40%) */
+.map-pane {
+  width: 40%;
+  background: var(--dark-wood-dark);
+}
+
+.map-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================================================
+   Interactive Literature Node Cards
+   ========================================================================== */
+.location-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.spot-card {
+  background: var(--hanji-card);
+  border: 1px solid var(--hanji-border);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(45, 26, 22, 0.02);
+  transition: var(--transition-smooth);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Left-side decorative accent bar */
+.spot-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--hanji-border);
+  transition: var(--transition-smooth);
+}
+
+.spot-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(45, 26, 22, 0.08);
+  border-color: var(--ocean-cyan-light);
+}
+
+.spot-card:hover::before {
+  background: var(--ocean-cyan-light);
+}
+
+/* Selected Active State */
+.spot-card.active {
+  border-color: var(--ocean-cyan);
+  box-shadow: 0 10px 30px rgba(14, 98, 115, 0.12);
+  background: #FCFBF7;
+}
+
+.spot-card.active::before {
+  width: 6px;
+  background: var(--ocean-cyan);
+}
+
+/* Card Header elements */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.card-title-group h3 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--dark-wood);
+}
+
+.card-location-sub {
+  font-size: 0.8rem;
+  color: var(--ocean-cyan);
+  font-weight: 600;
+  margin-top: 4px;
+  display: block;
+}
+
+.card-badges {
+  display: flex;
+  gap: 8px;
+}
+
+.badge {
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.badge-status {
+  background: rgba(14, 98, 115, 0.08);
+  color: var(--ocean-cyan);
+  border: 1px solid rgba(14, 98, 115, 0.15);
+}
+
+.badge-status.completed {
+  background: rgba(31, 63, 45, 0.08);
+  color: var(--forest-green-light);
+  border: 1px solid rgba(31, 63, 45, 0.15);
+}
+
+/* Lit Texts styling */
+.poem-box {
+  background: #FAF8F2;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px dashed rgba(45, 26, 22, 0.12);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.01);
+}
+
+.original-verse {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--dark-wood);
+  white-space: pre-line;
+  font-weight: 700;
+  margin-bottom: 15px;
+  letter-spacing: -0.2px;
+}
+
+.verse-divider {
+  height: 1px;
+  background: radial-gradient(circle, rgba(45, 26, 22, 0.15) 0%, rgba(250, 246, 235, 0) 70%);
+  margin: 12px 0;
+}
+
+.modern-verse {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  white-space: pre-line;
+}
+
+/* Scholarly Analysis section */
+.analysis-box {
+  background: rgba(14, 98, 115, 0.03);
+  border-left: 2px solid var(--ocean-cyan);
+  padding: 12px 18px;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 20px;
+}
+
+.analysis-box h4 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ocean-cyan);
+  margin-bottom: 4px;
+}
+
+.analysis-box p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--dark-wood-light);
+}
+
+/* Interactive Card Buttons */
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn {
+  font-family: var(--font-sans);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition-fast);
+}
+
+.btn-primary {
+  background-color: var(--forest-green);
+  color: var(--hanji-bg);
+}
+
+.btn-primary:hover {
+  background-color: var(--forest-green-light);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--ocean-cyan);
+  border: 1px solid var(--ocean-cyan);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(14, 98, 115, 0.05);
+}
+
+.btn-accent {
+  background-color: var(--ocean-cyan);
+  color: var(--white);
+  box-shadow: 0 2px 6px rgba(14, 98, 115, 0.2);
+}
+
+.btn-accent:hover {
+  background-color: var(--ocean-cyan-light);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background-color: var(--crimson-accent);
+  color: var(--white);
+}
+
+.btn-danger:hover {
+  background-color: #B23229;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.75rem;
+}
+
+/* ==========================================================================
+   Floating Map Detail Card
+   ========================================================================== */
+.detail-card {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  right: 30px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  display: flex;
+  overflow: hidden;
+  z-index: 5;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  max-height: 200px;
+}
+
+.detail-card.hidden {
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.close-card-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--dark-wood-light);
+  cursor: pointer;
+  z-index: 10;
+  transition: var(--transition-fast);
+}
+
+.close-card-btn:hover {
+  color: var(--crimson-accent);
+  transform: scale(1.1);
+}
+
+.detail-image-wrapper {
+  width: 40%;
+  height: 200px;
+  position: relative;
+  background: var(--dark-wood-dark);
+}
+
+.detail-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition-smooth);
+}
+
+.detail-card:hover .detail-image-wrapper img {
+  transform: scale(1.05);
+}
+
+.detail-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(45, 26, 22, 0.85);
+  color: var(--hanji-bg);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+
+.detail-body {
+  width: 60%;
+  padding: 20px 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.detail-body h3 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--dark-wood);
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.detail-original-snippet {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--ocean-cyan);
+  margin-bottom: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.detail-divider {
+  height: 1px;
+  background: var(--hanji-border);
+  margin-bottom: 8px;
+}
+
+.detail-desc {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.detail-body .btn {
+  align-self: flex-start;
+}
+
+/* ==========================================================================
+   Overlay & Glass Modals
+   ========================================================================== */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(30, 15, 13, 0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 1;
+  transition: var(--transition-smooth);
+}
+
+.overlay.hidden {
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.glass-modal {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: 0 15px 50px rgba(30, 15, 13, 0.4);
+  width: 90%;
+  max-width: 550px;
+  animation: modalReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+@keyframes modalReveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.overlay-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.overlay-header {
+  padding: 24px 30px;
+  border-bottom: 1px solid var(--hanji-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--hanji-card);
+}
+
+.overlay-header h2 {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--dark-wood);
+}
+
+.close-overlay-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.close-overlay-btn:hover {
+  color: var(--crimson-accent);
+}
+
+.overlay-body {
+  padding: 30px;
+  overflow-y: auto;
+  max-height: 70vh;
+}
+
+.overlay-body p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--dark-wood-light);
+  margin-bottom: 15px;
+}
+
+.api-guide-tip {
+  background: rgba(14, 98, 115, 0.05);
+  border-left: 3px solid var(--ocean-cyan);
+  padding: 15px;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.85rem !important;
+  color: var(--ocean-cyan) !important;
+}
+
+.api-guide-tip a {
+  color: var(--ocean-cyan-light);
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+/* Input Fields styling */
+.input-group {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--dark-wood);
+  letter-spacing: 0.5px;
+}
+
+.input-group input {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--hanji-border);
+  background: var(--white);
+  color: var(--dark-wood);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.input-group input:focus {
+  border-color: var(--ocean-cyan);
+  box-shadow: 0 0 0 3px rgba(14, 98, 115, 0.12);
+}
+
+.overlay-footer {
+  padding: 20px 30px;
+  background: var(--hanji-card);
+  border-top: 1px solid var(--hanji-border);
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ==========================================================================
+   Quiz Dialog Special Styling
+   ========================================================================== */
+.quiz-dialog {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.quiz-header {
+  padding: 20px 25px;
+  border-bottom: 1px solid var(--hanji-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--hanji-card);
+}
+
+.quiz-header-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quiz-icon {
+  font-size: 1.5rem;
+}
+
+.quiz-header h3 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--dark-wood);
+}
+
+.quiz-subtitle {
+  font-size: 0.75rem;
+  color: var(--ocean-cyan);
+  font-weight: 600;
+}
+
+.quiz-body {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.question-container {
+  background: var(--hanji-card);
+  border: 1px solid var(--hanji-border);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: inset 0 2px 4px rgba(45, 26, 22, 0.01);
+}
+
+.quiz-question-text {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  font-weight: 700;
+  color: var(--dark-wood);
+}
+
+.quiz-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option-btn {
+  background: var(--white);
+  border: 1px solid var(--hanji-border);
+  border-radius: 8px;
+  padding: 14px 20px;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--dark-wood-light);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.option-num {
+  background: var(--hanji-bg);
+  border: 1px solid var(--hanji-border);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--dark-wood);
+  flex-shrink: 0;
+  transition: var(--transition-fast);
+}
+
+.option-btn:hover {
+  background: var(--hanji-bg);
+  border-color: var(--ocean-cyan-light);
+  color: var(--dark-wood);
+  transform: translateX(3px);
+}
+
+.option-btn:hover .option-num {
+  background: var(--ocean-cyan);
+  color: var(--white);
+  border-color: var(--ocean-cyan-light);
+}
+
+/* Option States: Correct / Incorrect */
+.option-btn.correct {
+  background: rgba(31, 63, 45, 0.05) !important;
+  border-color: var(--forest-green-light) !important;
+  color: var(--forest-green) !important;
+  pointer-events: none;
+}
+
+.option-btn.correct .option-num {
+  background: var(--forest-green-light) !important;
+  color: var(--white) !important;
+  border-color: var(--forest-green) !important;
+}
+
+.option-btn.incorrect {
+  background: rgba(142, 37, 30, 0.05) !important;
+  border-color: var(--crimson-accent) !important;
+  color: var(--crimson-accent) !important;
+  pointer-events: none;
+}
+
+.option-btn.incorrect .option-num {
+  background: var(--crimson-accent) !important;
+  color: var(--white) !important;
+  border-color: var(--crimson-accent) !important;
+}
+
+.option-btn.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Quiz Feedback Box styling */
+.quiz-feedback-box {
+  border-radius: 8px;
+  padding: 18px;
+  margin-top: 10px;
+  animation: feedbackReveal 0.3s ease-out;
+}
+
+.quiz-feedback-box.correct {
+  background: rgba(31, 63, 45, 0.06);
+  border: 1px solid rgba(31, 63, 45, 0.15);
+}
+
+.quiz-feedback-box.incorrect {
+  background: rgba(142, 37, 30, 0.06);
+  border: 1px solid rgba(142, 37, 30, 0.15);
+}
+
+@keyframes feedbackReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.feedback-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.feedback-status h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.quiz-feedback-box.correct h4 {
+  color: var(--forest-green-light);
+}
+
+.quiz-feedback-box.incorrect h4 {
+  color: var(--crimson-accent);
+}
+
+.feedback-explanation {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--dark-wood-light);
+}
+
+.quiz-footer {
+  padding: 15px 25px;
+  background: var(--hanji-card);
+  border-top: 1px solid var(--hanji-border);
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Settings Menu CSS overrides */
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-group h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dark-wood);
+}
+
+.settings-group p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.settings-group input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--hanji-border);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+}
+
+.settings-divider {
+  height: 1px;
+  background: var(--hanji-border);
+  margin: 20px 0;
+}
+
+/* ==========================================================================
+   Utility Classes & Loading states
+   ========================================================================== */
+.hidden {
+  display: none !important;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 0;
+  gap: 15px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--hanji-border);
+  border-top-color: var(--ocean-cyan);
+  border-radius: 50%;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-state p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Dynamic Kakao Map Overlays styling */
+.kakao-overlay-label {
+  position: relative;
+  background: var(--dark-wood);
+  color: var(--hanji-bg);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  border: 1px solid var(--hanji-border);
+  white-space: nowrap;
+}
+
+.kakao-overlay-label::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0;
+  border-style: solid;
+  border-color: var(--dark-wood) transparent;
+  display: block;
+  width: 0;
+}
+
+.kakao-overlay-label.active {
+  background: var(--ocean-cyan);
+  border-color: var(--ocean-cyan-light);
+}
+
+.kakao-overlay-label.active::after {
+  border-color: var(--ocean-cyan) transparent;
+}

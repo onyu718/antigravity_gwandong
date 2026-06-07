@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관동별곡 인터랙티브 학습 플랫폼 (Web)</title>
+  <!-- Google Fonts for Elegant Serif & Clean Sans-Serif -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@300;400;700;900&family=Outfit:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation & Study Progress Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo">
+        <span class="logo-icon">🌿</span>
+        <h1>관동별곡(關東別曲)</h1>
+        <span class="logo-sub">온라인 인터랙티브 학습관</span>
+      </div>
+    </div>
+    
+    <div class="header-right">
+      <!-- Progress Bar -->
+      <div class="progress-container">
+        <span class="progress-label">학습 완료율</span>
+        <div class="progress-bar-bg">
+          <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%;"></div>
+        </div>
+        <span id="progress-text" class="progress-text">0% (0/17 완료)</span>
+      </div>
+      
+      <!-- Control Buttons -->
+      <button id="settings-btn" class="icon-btn" title="API 설정 및 학습 초기화">
+        <span class="icon">⚙️</span> 설정
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Workstation Layout -->
+  <main class="app-layout">
+    <!-- Left Pane: Lit Scroll (60% Width) -->
+    <section class="pane text-pane" id="text-panel">
+      <div class="panel-header">
+        <span class="panel-title-korean">關東別曲 註解</span>
+        <h2>관동별곡 본문 & 현대어 풀이</h2>
+        <p class="panel-desc">아래의 본문 단락을 선택하면 지도에서 해당 가사 속 실제 명승지로 즉시 이동합니다.</p>
+      </div>
+      
+      <!-- Generated List of Poem Segments -->
+      <div id="location-list" class="location-list">
+        <!-- Rendered dynamically by renderer.js -->
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>데이터를 불러오는 중입니다...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Pane: Kakao Map View (40% Width) -->
+    <section class="pane map-pane" id="map-panel">
+      <!-- Kakao Map Container -->
+      <div id="map" class="map-container"></div>
+      
+      <!-- Floating Map Info Card -->
+      <div id="detail-card" class="detail-card hidden">
+        <button id="close-detail-btn" class="close-card-btn">&times;</button>
+        <div class="detail-image-wrapper">
+          <img id="detail-photo" src="" alt="명승지 전경">
+          <div class="detail-badge" id="detail-spot-badge">금강산</div>
+        </div>
+        <div class="detail-body">
+          <h3 id="detail-title">소양강 나린 물</h3>
+          <p class="detail-original-snippet" id="detail-snippet">"소양강 나린 물이 어디로 든단 말인고..."</p>
+          <div class="detail-divider"></div>
+          <p class="detail-desc" id="detail-description">소양강(昭陽江)은 강원도 춘천시를 흐르는 강으로...</p>
+          <button id="detail-quiz-trigger" class="btn btn-primary btn-sm">
+            🎯 이 장소 퀴즈 풀기
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal 1: Kakao Maps API Setup Overlay -->
+  <div id="setup-overlay" class="overlay hidden">
+    <div class="overlay-card glass-modal">
+      <div class="overlay-header">
+        <span class="setup-icon">🗺️</span>
+        <h2>지도 서비스 API 연동 설정</h2>
+      </div>
+      <div class="overlay-body">
+        <p>이 애플리케이션은 한국 국토 지리 정보를 선명하게 표현하기 위해 <strong>카카오 지도 API (Kakao Maps API)</strong>를 연동해 사용합니다.</p>
+        <p class="api-guide-tip">
+          💡 <strong>API 키 발급 방법:</strong><br>
+          1. <a href="https://developers.kakao.com/" target="_blank">카카오 개발자 센터</a>에 로그인합니다.<br>
+          2. 애플리케이션을 추가한 뒤, <strong>[플랫폼]</strong> 설정에서 웹 플랫폼으로 본인의 GitHub Pages 배포 도메인 주소(예: <code>https://자신의아이디.github.io</code>)를 등록합니다.<br>
+          3. 발급된 <strong>[JavaScript 키]</strong>를 복사하여 아래에 입력해 주세요.
+        </p>
+        <div class="input-group">
+          <label for="kakao-key-input">카카오 JavaScript API Key</label>
+          <input type="text" id="kakao-key-input" placeholder="JavaScript 키를 입력하세요" autocomplete="off">
+        </div>
+      </div>
+      <div class="overlay-footer">
+        <button id="save-key-btn" class="btn btn-accent">💾 API 설정 저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Settings and Reset Overlay -->
+  <div id="settings-overlay" class="overlay hidden">
+    <div class="overlay-card glass-modal">
+      <div class="overlay-header">
+        <h2>⚙️ 애플리케이션 설정</h2>
+        <button id="close-settings-btn" class="close-overlay-btn">&times;</button>
+      </div>
+      <div class="overlay-body">
+        <div class="settings-group">
+          <h3>카카오 API Key 관리</h3>
+          <p>현재 등록된 카카오 API 키를 변경할 수 있습니다.</p>
+          <input type="text" id="settings-key-input" placeholder="JavaScript API 키">
+        </div>
+        <div class="settings-divider"></div>
+        <div class="settings-group">
+          <h3>학습 데이터 초기화</h3>
+          <p>퀴즈 정답 기록 및 마지막 위치 기억을 지우고 처음부터 다시 공부합니다.</p>
+          <button id="reset-progress-btn" class="btn btn-danger">🗑️ 학습 진도 및 설정 전체 초기화</button>
+        </div>
+      </div>
+      <div class="overlay-footer">
+        <button id="save-settings-btn" class="btn btn-accent">적용하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Interactive Quiz Panel -->
+  <div id="quiz-modal" class="overlay hidden">
+    <div class="quiz-dialog glass-modal">
+      <div class="quiz-header">
+        <div class="quiz-header-title">
+          <span class="quiz-icon">📝</span>
+          <div>
+            <h3 id="quiz-location-title">1. 부임과 출발 (한양)</h3>
+            <span class="quiz-subtitle">관동별곡 형성 평가</span>
+          </div>
+        </div>
+        <button id="quiz-close-btn" class="close-overlay-btn">&times;</button>
+      </div>
+      <div class="quiz-body">
+        <div class="question-container">
+          <p id="quiz-question" class="quiz-question-text">퀴즈 질문이 로드되는 중입니다...</p>
+        </div>
+        <div id="quiz-options" class="quiz-options-list">
+          <!-- Options rendered dynamically -->
+        </div>
+        <div id="quiz-feedback" class="quiz-feedback-box hidden">
+          <div class="feedback-status">
+            <span id="feedback-icon">✅</span>
+            <h4 id="feedback-title">정답입니다!</h4>
+          </div>
+          <p id="quiz-explanation" class="feedback-explanation">해설이 들어가는 공간입니다.</p>
+        </div>
+      </div>
+      <div class="quiz-footer">
+        <button id="quiz-next-btn" class="btn btn-accent hidden">확인 및 닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Safe browser-native script execution -->
+  <script src="renderer.js"></script>
+</body>
+</html>
