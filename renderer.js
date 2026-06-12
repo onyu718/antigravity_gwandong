@@ -123,6 +123,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   
   // 2. Setup Base Event Listeners
   setupCoreEvents();
+  setupMobileNavigation();
   
   // 3. Render left pane UI cards
   renderSpotCards();
@@ -451,6 +452,14 @@ async function selectSpot(spotId, shouldPan = true) {
 
   // 2. Apply active state to new selection
   currentActiveSpotId = spotId;
+  
+  // Auto-switch to Map tab on mobile screen sizes if panning is requested
+  if (window.innerWidth <= 768 && shouldPan) {
+    const tabMapBtn = document.getElementById('mobile-tab-map');
+    if (tabMapBtn && !tabMapBtn.classList.contains('active')) {
+      tabMapBtn.click();
+    }
+  }
   
   const newCard = document.getElementById(`card-${spotId}`);
   if (newCard) {
@@ -1022,4 +1031,65 @@ async function getFallbackGwandongData() {
         }
     }
 ];
+}
+
+// Mobile View Navigation Handler
+function setupMobileNavigation() {
+  const tabTextBtn = document.getElementById('mobile-tab-text');
+  const tabMapBtn = document.getElementById('mobile-tab-map');
+  const textPanel = document.getElementById('text-panel');
+  const mapPanel = document.getElementById('map-panel');
+
+  if (!tabTextBtn || !tabMapBtn || !textPanel || !mapPanel) return;
+
+  // Set initial state for mobile (Map hidden, Text shown)
+  if (window.innerWidth <= 768) {
+    mapPanel.classList.add('mobile-hidden');
+  }
+
+  // Handle window resizing (reset display state)
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      textPanel.classList.remove('mobile-hidden');
+      mapPanel.classList.remove('mobile-hidden');
+    } else {
+      // Restore mobile tab state
+      if (tabTextBtn.classList.contains('active')) {
+        textPanel.classList.remove('mobile-hidden');
+        mapPanel.classList.add('mobile-hidden');
+      } else {
+        textPanel.classList.add('mobile-hidden');
+        mapPanel.classList.remove('mobile-hidden');
+      }
+    }
+  });
+
+  tabTextBtn.addEventListener('click', () => {
+    tabTextBtn.classList.add('active');
+    tabMapBtn.classList.remove('active');
+    textPanel.classList.remove('mobile-hidden');
+    mapPanel.classList.add('mobile-hidden');
+  });
+
+  tabMapBtn.addEventListener('click', () => {
+    tabMapBtn.classList.add('active');
+    tabTextBtn.classList.remove('active');
+    mapPanel.classList.remove('mobile-hidden');
+    textPanel.classList.add('mobile-hidden');
+
+    // VERY IMPORTANT: Recalculate Kakao Maps layout when panel transitions from hidden to visible
+    if (map) {
+      setTimeout(() => {
+        map.relayout();
+        // If there's an active spot, center map on it
+        if (currentActiveSpotId) {
+          const spot = spots.find(s => s.id === currentActiveSpotId);
+          if (spot) {
+            const coords = new kakao.maps.LatLng(spot.lat, spot.lng);
+            map.setCenter(coords);
+          }
+        }
+      }, 50);
+    }
+  });
 }
