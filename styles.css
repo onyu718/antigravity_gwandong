@@ -3,6 +3,16 @@
    Designed by Antigravity
    ========================================================================== */
 
+/* Webfont for Old Hangul (Arae-a Support) */
+@font-face {
+  font-family: 'NanumMyeongjoYetHangul';
+  src: url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumMyeongjoYetHangul/NanumMyeongjo-YetHangul.eot');
+  src: url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumMyeongjoYetHangul/NanumMyeongjo-YetHangul.eot?#iefix') format('embedded-opentype'),
+       url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumMyeongjoYetHangul/NanumMyeongjo-YetHangul.woff2') format('woff2'),
+       url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumMyeongjoYetHangul/NanumMyeongjo-YetHangul.woff') format('woff'),
+       url('https://hangeul.pstatic.net/hangeul_static/webfont/NanumMyeongjoYetHangul/NanumMyeongjo-YetHangul.ttf') format('truetype');
+}
+
 /* Design Variables */
 :root {
   /* Colors */
@@ -25,6 +35,7 @@
   
   /* Typography */
   --font-serif: 'Gowun Batang', 'Noto Serif KR', serif;
+  --font-old-hangul: 'NanumMyeongjoYetHangul', 'Gowun Batang', 'Noto Serif KR', serif;
   --font-sans: 'Outfit', 'Noto Sans KR', sans-serif;
   
   /* Transitions */
@@ -368,7 +379,7 @@ body {
 }
 
 .original-verse {
-  font-family: var(--font-serif);
+  font-family: var(--font-old-hangul);
   font-size: 1.15rem;
   line-height: 1.8;
   color: var(--dark-wood);
@@ -572,7 +583,7 @@ body {
 }
 
 .detail-original-snippet {
-  font-family: var(--font-serif);
+  font-family: var(--font-old-hangul);
   font-size: 0.85rem;
   font-style: italic;
   color: var(--ocean-cyan);
