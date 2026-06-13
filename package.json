@@ -1,0 +1,19 @@
+{
+  "name": "gwandong-learning-platform",
+  "version": "1.0.0",
+  "description": "Gwandongbyeolgok Interactive Learning Platform for High School Students",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "gwandongbyeolgok",
+    "learning",
+    "electron"
+  ],
+  "author": "Antigravity",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^31.7.7"
+  }
+}
